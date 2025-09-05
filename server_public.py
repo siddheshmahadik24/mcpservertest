@@ -1,15 +1,17 @@
 from mcp.server import FastMCP
-import uvicorn
 
 mcp = FastMCP("server")
 
 @mcp.tool()
 def greeting(name: str) -> str:
     "Send a greeting"
-    return f"Hi {name}"
+    return f"Hi {name} from Azure VM!"
 
 if __name__ == "__main__":
-    # For public access, we need to use uvicorn directly with host="0.0.0.0"
-    # This allows external connections to reach the server
-    app = mcp.get_app()
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # This version will run on Azure VM
+    # Note: FastMCP binds to localhost by default
+    # You'll need to use SSH port forwarding or configure Azure firewall
+    print("Starting server on Azure VM...")
+    print("Server will be accessible at http://127.0.0.1:8000 locally on the VM")
+    print("For external access, you'll need SSH port forwarding")
+    mcp.run(transport="streamable-http")
